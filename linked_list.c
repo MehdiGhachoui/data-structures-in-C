@@ -4,36 +4,84 @@
 typedef struct List list_t;
 struct List {
   int value;
-  list_t *next;
+  list_t* next;
 };
 
-void next(list_t* list){
-  list = list->next;
+void printList(list_t* list){
+  list_t* current = list;
+  while (current != NULL){
+    printf("%d\n",current->value);
+    current = current->next;
+  }
 };
 
-list_t *append(int number){
-  list_t *newList = (list_t*)malloc(sizeof(list_t));
+list_t* appendToTail(int number,list_t* list){
+  list_t* newTail = (list_t*)malloc(sizeof(list_t));
+  newTail->value = number;
+  newTail-> next = NULL;
 
-  newList->value = number;
-  newList-> next = NULL;
+  list_t* temp = list;
+  while (temp->next != NULL)
+  {
+    temp = temp->next;
+  };
 
-  return newList;
+  temp->next = newTail;
+  return list;
 };
 
-//Implement Indexing!?
+list_t* appendToHead(int number, list_t* list){
+  list_t* newHead = (list_t*)malloc(sizeof(list_t));
+  newHead->value = number;
+  newHead->next = list ;
+
+  return newHead;
+};
+
+list_t* appendToPosition(int number,int position, list_t* list){
+  list_t* node = (list_t*)malloc(sizeof(list_t));
+  node->value = number;
+  node->next = NULL;
+
+  if (position == 1)
+  {
+    node->next = list;
+    list = node;
+    return list;
+  }
+
+  list_t* current = list;
+  int iterator = 1;
+  while (position - 1 != iterator && current != NULL)
+  {
+    current = current->next;
+    iterator++;
+  };
+
+  if(current == NULL){
+    printf("Position %d is out of bound", position);
+    free(node);
+    return list;
+  }
+  node->next = current->next;
+  current->next = node;
+
+  return list;
+};
+
 void  main(){
   list_t *list = (list_t*)malloc(sizeof(list_t));
-  list->value = 5;
+  list->value = 1;
   list->next = NULL;
 
-  printf("%d",list->value);
-  list = append(4);
-  next(list);
-  printf("%d",list->value);
+  list = appendToTail(0,list);
+  list = appendToHead(3,list);
+  list = appendToPosition(2,2,list);
+  printList(list);
 
   // free each pointer
   while(list != NULL){
     free(list);
-    next(list);
+    list = list->next;
   };
 }
