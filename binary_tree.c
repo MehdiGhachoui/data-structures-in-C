@@ -56,7 +56,7 @@ void DFS_PostOrder(bt_t *tree){
   printf("%d",tree->value);
 }
 
-// II - BFS : Exploring all nodes on each level before going down (using a Queue)
+// II - BFS : Exploring all nodes on each level before going down (using a Queue) -left then right-
 void BFS_Order(bt_t *tree){
 
   if(tree == NULL){
@@ -64,34 +64,87 @@ void BFS_Order(bt_t *tree){
   }
 
   bt_t *queue[100];
-  int front , rear = 0;
-  queue[rear] = tree;
-  rear++;
+  int front = 0 , rear = 0;
+  queue[rear++] = tree;
 
   while (front<rear)
   {
-    bt_t *node = queue[front];
-    front++;
+    bt_t *node = queue[front++];
 
     printf("%d",node->value);
+
     if (node->left)
     {
-      queue[rear] = node->left;
-      rear++;
+      queue[rear++] = node->left;
     }
     if (node->right)
     {
-      queue[rear] = node->right;
-      rear++;
+      queue[rear++] = node->right;
     }
 
   }
-
-
-
-  BFS_Order(tree->left);
-  BFS_Order(tree->right);
 }
+
+
+// Insertion: starts with the left
+bt_t *insertChild(bt_t *tree,int data){
+  bt_t *newNode = create_node(data);
+
+  if (tree == NULL)
+  {
+    return newNode;
+  }
+
+  bt_t *queue[100];
+  int front = 0, rear = 0;
+
+  queue[rear++] = tree;
+
+  while (front<rear)
+  {
+    bt_t *node = queue[front++];
+
+    if (node->left)
+    {
+      queue[rear++]= node->left;
+    }
+    else{
+      node->left = newNode;
+      break;
+    }
+
+    if (node->right)
+    {
+      queue[rear++]= node->right;
+    }
+    else{
+      node->right = newNode;
+      break;
+    }
+
+  }
+  return tree;
+}
+
+
+// Search : in case of normal BT (!BST) we use the traversal functions
+int searchNode(bt_t *tree, int data){
+  if (tree == NULL)
+  {
+    return 0;
+  }
+
+  if (tree->value == data)
+  {
+   return 1 ;
+  }
+
+  int left = searchNode(tree->left,data);
+  int right = searchNode(tree->right,data);
+
+  return left || right;
+}
+
 
 void main(){
   bt_t *root = create_node(1);
@@ -100,6 +153,8 @@ void main(){
 
   root->left = second_child;
   root->right = first_child;
+  root = insertChild(root,4);
+  root = insertChild(root,5);
 
   DFS_PreOrder(root);
   printf("\n");
@@ -109,4 +164,11 @@ void main(){
   printf("\n");
   printf("\n");
   BFS_Order(root);
+
+  printf("\n");
+
+  if(searchNode(root,4) == 1){
+    printf("found!");
+  }
+
 }
