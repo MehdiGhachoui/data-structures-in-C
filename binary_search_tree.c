@@ -42,24 +42,28 @@ bst_t *insertChild(bst_t *root, int data){
   return root;
 }
 
-bst_t *searchNode(bst_t *root, int data){
+int searchNode(bst_t *root, int data){
+  int left = 0,right= 0;
 
   if (root == NULL)
   {
-    return NULL;
+    return 0;
   }
 
   if(root->value == data){
-    return root;
+    return 1; //return tree
   }
 
   if (root->value < data){
-    return searchNode(root->right,data);
+    right =  searchNode(root->right,data);
+    //return s....
   }
 
   else{
-    return searchNode(root->left,data);
+    left =  searchNode(root->left,data);
   }
+
+  return left || right;
 }
 
 void DFS_InOrder(bst_t *tree){
@@ -84,7 +88,7 @@ void main(){
 
   printf("\n");
 
-  if (searchNode(root,0) != NULL )
+  if (searchNode(root,0) == 1 )
   {
     printf("found node!");
   }
