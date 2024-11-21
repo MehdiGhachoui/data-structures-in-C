@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 typedef struct Heap heap_t;
 struct Heap{
@@ -7,6 +8,8 @@ struct Heap{
   int size;
   int *arr;
 };
+
+// MAX HEAP;
 
 void swap(int* a, int* b)
 {
@@ -36,11 +39,7 @@ void updateHeap(heap_t *heap,int i){
 }
 
 void insertValue(heap_t *heap,int data){
-  if (heap->size == heap->capacity)
-  {
-    printf("Reach the heap maximum capacity");
-    return;
-  }
+  assert(heap->size != heap->capacity && "Reached Heap Maximum Capacity");
 
   int i = heap->size;
   heap->arr[heap->size++] = data;
@@ -56,10 +55,7 @@ void insertValue(heap_t *heap,int data){
 
 void deleteValue(heap_t *heap,int index){
 
-  if(index >= heap->size){
-    printf("Invalid Index;");
-    return;
-  }
+  assert(index >= heap->size && "Index out of scope");
 
   if(index == heap->size - 1){
     heap->size--;
@@ -75,11 +71,7 @@ void deleteValue(heap_t *heap,int index){
 
 int extractMax(heap_t *heap){
 
-  if (heap->size == 0)
-  {
-    printf("Extraction on Empty heap");
-    return ;
-  }
+  assert(heap->size == 0 && "Extraction On Empty Heap");
 
   if (heap->size == 1)
   {
