@@ -15,26 +15,93 @@ void swap(int* a, int* b)
   *b = temp;
 }
 
-insertValue(heap_t *heap,int data){
+void updateHeap(heap_t *heap,int i){
+  int current = i;
+  int leftChild = 2*i + 1;
+  int rightChild = 2*i + 2;
 
-  if(heap->capacity == heap->size){
-    printf("Heap Overflow\n");
-    return ;
+
+  if(leftChild<heap->size && heap->arr[leftChild]>heap->arr[current]){
+    current = leftChild;
+  }
+  if(rightChild<heap->size && heap->arr[rightChild]>heap->arr[current]){
+    current = rightChild;
+  }
+
+  if(i!=current){
+    swap(&heap->arr[i],&heap->arr[current]);
+    updateHeap(heap,current);
+  }
+  return;
+}
+
+void insertValue(heap_t *heap,int data){
+  if (heap->size == heap->capacity)
+  {
+    printf("Reach the heap maximum capacity");
+    return;
   }
 
   int i = heap->size;
   heap->arr[heap->size++] = data;
 
-  while (i != 0 && heap->arr[(i - 1) / 2] < heap->arr[i]) {
-    swap(&heap->arr[i], &heap->arr[(i - 1) / 2]);
-    i = (i - 1) / 2;
+  while (i!=0 && heap->arr[(i-1)/2]<heap->arr[i])
+  {
+    swap(&heap->arr[(i-1)/2],&heap->arr[i]);
+    i = (i-1)/2; //next parent
   }
+
+  return;
+}
+
+void deleteValue(heap_t *heap,int index){
+
+  if(index >= heap->size){
+    printf("Invalid Index;");
+    return;
+  }
+
+  if(index == heap->size - 1){
+    heap->size--;
+    return;
+  }
+
+  heap->arr[index] = heap->arr[heap->size - 1];
+  heap->size--;
+
+  updateHeap(heap,index);
+  return;
+}
+
+int extractMax(heap_t *heap){
+
+  if (heap->size == 0)
+  {
+    printf("Extraction on Empty heap");
+    return ;
+  }
+
+  if (heap->size == 1)
+  {
+    heap->size--;
+    return heap->arr[0];
+  }
+
+
+  int max = heap->arr[0];
+
+  heap->arr[0] = heap->arr[heap->size - 1];
+  heap->size--;
+
+  updateHeap(heap,0);
+  return max;
 }
 
 void main(){
-  heap_t *heap = (heap_t*)malloc(sizeof(heap_t));
-  heap->capacity = 10;
-  heap->size = 0;
-  heap->arr = (int*)malloc(heap->capacity * sizeof(int));
+  heap_t heap;
+  heap.capacity = 10;
+  heap.size = 0;
+  heap.arr = (int*)malloc(heap.capacity * sizeof(int));
+
 
 }
