@@ -93,7 +93,7 @@ void main(){
   heap_t heap;
   heap.capacity = 10;
   heap.size = 0;
-  heap.arr = (int*)malloc(heap.capacity * sizeof(int));
+  heap.arr = malloc(heap.capacity * sizeof(int));
 
 
 }

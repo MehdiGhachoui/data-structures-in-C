@@ -6,8 +6,8 @@
 typedef struct stack stack_t;
 struct stack
 {
-  int arr[MAX_SIZE];
   int position;
+  int arr[MAX_SIZE];
 };
 
 int isFull(stack_t *stk){
