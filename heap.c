@@ -90,10 +90,10 @@ int extractMax(heap_t *heap){
 }
 
 void main(){
-  heap_t heap;
-  heap.capacity = 10;
-  heap.size = 0;
-  heap.arr = malloc(heap.capacity * sizeof(int));
+  heap_t *heap = malloc(sizeof(heap_t));
+  heap->capacity = 10;
+  heap->size = 0;
+  heap->arr = malloc(heap->capacity * sizeof(int));
 
 
 }
