@@ -54,10 +54,15 @@ ht *newMap(){
 
   map->capacity = INIT_CAPACITY;
   map->size = 0;
+
+  //calloc(map->capacity, sizeof(void*)); ...why?
+  //The struct here doesn't matter , since the the value of each field is an address
+  //The size of a pointer is independent of the type it points to.
+  //void* == Type*; **on most systems**
   map->items = calloc(map->capacity, sizeof(ht_item*));// the pointer to the object
 
-  return map;
 }
+
 
 void freeMap(ht *map){
   int i = 0;
